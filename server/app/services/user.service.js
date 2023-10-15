@@ -2,7 +2,7 @@ const { ObjectId } = require('mongodb');
 
 class UserService {
     constructor(client) {
-        this.User = client.db().collection('users');
+        this.User = client.db().collection('client');
     }
     extractUserData(payload) {
         const user = {

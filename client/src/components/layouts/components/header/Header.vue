@@ -33,7 +33,7 @@
                     ></router-link>
                 </span>
                 <span v-else>
-                    <router-link to="/user/profile">
+                    <router-link to="/user/purchase">
                         <i class="fa-solid fa-user mr-3 ml-2"></i>
                     </router-link>
                 </span>

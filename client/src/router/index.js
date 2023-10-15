@@ -67,7 +67,7 @@ const routes = [
     },
 
     {
-        path: '/user/profile',
+        path: '/user/',
         name: 'user',
         component: UserHome,
         children: [

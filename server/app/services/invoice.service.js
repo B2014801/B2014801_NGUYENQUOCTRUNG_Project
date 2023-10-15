@@ -3,9 +3,9 @@ const { ObjectId } = require('mongodb');
 class InvoiceService {
     constructor(client) {
         // get collection product
-        this.Invoice = client.db().collection('invoices');
-        this.Product = client.db().collection('products');
-        this.User = client.db().collection('users');
+        this.Invoice = client.db().collection('order');
+        this.Product = client.db().collection('product');
+        this.User = client.db().collection('client');
     }
     // Định nghĩa các phương thức truy xuất CSDL sử dụng mongodb API
     extractProductData(payload) {
@@ -118,6 +118,7 @@ class InvoiceService {
             for (const items of InvoiceProduct) {
                 await Detail(items.Detail, items);
             }
+            console.log(documents);
             return documents; // This will print the collected documents after all processing is done.
         } catch (error) {
             console.log(error);

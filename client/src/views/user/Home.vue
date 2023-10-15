@@ -20,10 +20,6 @@
 <script>
 const list_user_category = [
     {
-        title: 'TÀI KHOẢN',
-        link: '/user/profile',
-    },
-    {
         title: 'TẤT CẢ',
         link: { name: 'state' },
     },

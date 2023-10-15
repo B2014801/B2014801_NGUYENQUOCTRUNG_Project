@@ -2,7 +2,7 @@ const { SALT_ROUNDS } = require('../variables/auth');
 const bcrypt = require('bcrypt');
 class AuthService {
     constructor(client) {
-        this.User = client.db().collection('admin');
+        this.User = client.db().collection('client');
         this.Admin = client.db().collection('admin');
     }
     extractUserData(payload) {

@@ -208,6 +208,7 @@ export default {
                 if (this.CheckOutData.length != 0 && Object.keys(this.User).length != 0) {
                     this.isShowCheckOut = true;
                 } else {
+                    console.log(this.User);
                     // this.isShowEmptyCart = true;
                     this.isShowCheckOut = false;
                     this.isShowEmptyCheckOut = true;
@@ -246,7 +247,7 @@ export default {
 
         async getDetail() {
             let Detail = [];
-            await this.CheckOutData.map((item, index) =>
+            this.CheckOutData.map((item, index) =>
                 Detail.push({
                     _id: item.ProductData._id,
                     name: item.ProductData.name,
@@ -263,12 +264,11 @@ export default {
                         this.isShowLoading = true;
                         const user = await this.getUser();
                         const Detail = await this.getDetail();
-                        const vouchers = this.getVoucherDetail;
+
                         let data = {
                             UserId: user._id,
                             PaymentMethod: this.isChooseOneMethodPayment,
                             Detail: Detail,
-                            Vouchers: vouchers,
                         };
                         const result = await InvoiceService.create(data);
                         if (result) {
@@ -302,9 +302,8 @@ export default {
                     (total, item) => total + item.Amount * item.ProductData.price.replace(/\./g, ''),
                     0,
                 );
-                if (temporary_price) {
-                    return this.formatNumberWithDot(temporary_price);
-                }
+
+                return this.formatNumberWithDot(temporary_price);
             }
         },
         getTotalPrice() {
@@ -321,13 +320,6 @@ export default {
             // }
             const total = products_price - (products_price * discount_percent) / 100 - 15000;
             return this.formatNumberWithDot(total);
-        },
-        getVoucherDetail() {
-            let voucher = [];
-            this.selectedvoucher2.map((itemindex, index) => {
-                voucher.push(this.vouchers[itemindex]);
-            });
-            return voucher;
         },
     },
     watch: {

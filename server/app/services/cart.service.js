@@ -2,7 +2,7 @@ const { ObjectId } = require('mongodb');
 class CartService {
     constructor(client) {
         // get collection product
-        this.Cart = client.db().collection('carts');
+        this.Cart = client.db().collection('cart');
         this.Cart.createIndex({ UserId: 1, ProductId: 1 }, { unique: true });
 
         // this.Product = client.db().collection('products');
@@ -48,7 +48,7 @@ class CartService {
             },
             {
                 $lookup: {
-                    from: 'products',
+                    from: 'product',
                     localField: 'ProductId',
                     foreignField: '_id',
                     as: 'ProductData',
