@@ -1,6 +1,7 @@
 <template>
     <div>
-        <h3>main</h3>
+        <!-- place for containter router -->
+        <router-view />
     </div>
 </template>
 
