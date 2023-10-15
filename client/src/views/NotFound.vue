@@ -6,3 +6,10 @@
         </p>
     </div>
 </template>
+<script>
+export default {
+    mounted() {
+        document.title = 'Not found';
+    },
+};
+</script>

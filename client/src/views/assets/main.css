@@ -1,0 +1,13 @@
+.selloff {
+    border: 3px solid rgb(34, 101, 105);
+    position: absolute;
+    background-color: #fff;
+    margin-top: 12%;
+}
+.product-item {
+    -webkit-box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.22);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.22);
+}
+li {
+    list-style: none;
+}
