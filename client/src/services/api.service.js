@@ -57,13 +57,12 @@ export const createApiClient = (baseURL, withAuthToken = false) => {
             (response) => {
                 return response;
             },
-            (error) => {
+            async (error) => {
                 if (error.response.status == 401) {
-                    // Maybe token expired, so logout
-                    // auth.logout();
-                    // console.log(error);
-                    alert('Phiên đăng nhập đã hết hạn');
-                    vm.$router.push({ name: 'login' });
+                    const module = await import('@/stores/auth.store');
+                    const { useAuthStore } = module;
+                    const auth = useAuthStore();
+                    auth.setExpired();
                 }
                 return Promise.reject(error);
             },

@@ -14,17 +14,11 @@
         </carousel>
     </section>
     <hr />
-    <section class="mx-3">
-        <div>
-            <h3 class="text-center">THÚ CƯNG ĐANG BÁN</h3>
-            <ProductList :products="products" />
-        </div>
-    </section>
-    <HR></HR>
+
     <section class="mx-3">
         <div>
             <h3 class="text-center">THÚ CƯNG MỚI NHẤT</h3>
-            <ProductList :products="products" />
+            <ProductList :products="sortNewProduct" />
         </div>
         <hr />
     </section>
@@ -60,6 +54,18 @@ export default {
         resetCarousel() {
             // Reset the carousel back to the first slide when it reaches the end
             this.$refs.carousel.goTo(0);
+        },
+    },
+    computed: {
+        sortNewProduct() {
+            return this.products.sort((a, b) => {
+                const dateA = new Date(a.createDate);
+                const dateB = new Date(b.createDate);
+
+                if (dateA < dateB) return 1;
+                if (dateA > dateB) return -1;
+                return 0;
+            });
         },
     },
     mounted() {

@@ -1,15 +1,20 @@
 import { defineStore } from 'pinia';
 import AuthService from '@/services/auth.service';
+import { cartStore } from '@/stores/main';
 
 export const useAuthStore = defineStore('auth', {
     state() {
         return {
             user: null,
+            isExpire: false,
         };
     },
     getters: {
         isUserLoggedIn(state) {
             return !!state.user && !!state.user.accessToken;
+        },
+        getExpired() {
+            return this.isExpire;
         },
     },
     actions: {
@@ -19,6 +24,8 @@ export const useAuthStore = defineStore('auth', {
         logout() {
             this.user = null;
             localStorage.removeItem('user');
+            let CartStore = cartStore();
+            CartStore.setAmount(0);
         },
         async login(user) {
             const response = await AuthService.login(user);
@@ -40,6 +47,9 @@ export const useAuthStore = defineStore('auth', {
         register(user) {
             this.user = null;
             return AuthService.register(user);
+        },
+        setExpired() {
+            this.isExpire = true;
         },
     },
 });

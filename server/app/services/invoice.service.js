@@ -118,7 +118,6 @@ class InvoiceService {
             for (const items of InvoiceProduct) {
                 await Detail(items.Detail, items);
             }
-            console.log(documents);
             return documents; // This will print the collected documents after all processing is done.
         } catch (error) {
             console.log(error);

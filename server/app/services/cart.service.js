@@ -32,7 +32,7 @@ class CartService {
             // if (result.lastErrorObject.updatedExisting) {
             //     return false;
             // } else {
-            return result.value;
+            return result.lastErrorObject;
             // }
         } catch (error) {
             return true;

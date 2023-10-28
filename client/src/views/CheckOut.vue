@@ -318,7 +318,7 @@ export default {
                 0,
             );
             // }
-            const total = products_price - (products_price * discount_percent) / 100 - 15000;
+            const total = products_price - (products_price * discount_percent) / 100 + 15000;
             return this.formatNumberWithDot(total);
         },
     },

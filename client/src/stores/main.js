@@ -1,18 +1,28 @@
 // store.js
-import Vuex from 'vuex';
+import { defineStore } from 'pinia';
 
-const store = new Vuex.Store({
-    state: {
-        accessToken: null,
+export const cartStore = defineStore('cart', {
+    state() {
+        return {
+            amount: 0,
+        };
     },
-    mutations: {
-        setAccessToken(state, token) {
-            state.accessToken = token;
+    //like computed
+    getters: {
+        getAmount() {
+            return this.amount;
         },
     },
-    getters: {
-        accessToken: (state) => state.accessToken,
+    //like method
+    actions: {
+        setAmount(amount) {
+            this.amount = amount;
+        },
+        plusAmount() {
+            this.amount++;
+        },
+        minusAmount() {
+            this.amount--;
+        },
     },
 });
-
-export default store;

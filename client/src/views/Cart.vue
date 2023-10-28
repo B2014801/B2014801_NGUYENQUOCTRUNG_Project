@@ -130,6 +130,7 @@ import { Form, Field, ErrorMessage } from 'vee-validate';
 import * as yup from 'yup';
 
 import CartService from '@/services/cart.service';
+import { cartStore } from '@/stores/main';
 import { useAuthStore } from '@/stores/auth.store';
 export default {
     components: {
@@ -180,9 +181,7 @@ export default {
                     this.isShowCart = false;
                 }
             } catch (error) {
-                // alert('vui lòng đăng nhập trước');
-                // this.$router.push({ name: 'login' });
-                console.log(error);
+                this.$router.push({ name: 'login' });
             }
         },
         handleMinusOrderProduct(index) {
@@ -224,6 +223,8 @@ export default {
                 this.isShowDeleteProductOutOfCartSuccess = true;
                 this.isShowUpdateCartSuccess = false;
                 this.getCart();
+                let CartStore = cartStore();
+                CartStore.minusAmount();
             }
         },
     },

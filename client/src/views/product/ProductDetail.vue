@@ -76,6 +76,7 @@ import ProductList from '@/views/product/ProductList.vue';
 import PetshopService from '@/services/petshop.service';
 import { Form, Field, ErrorMessage } from 'vee-validate';
 import * as yup from 'yup';
+import { cartStore } from '@/stores/main';
 import { useAuthStore } from '@/stores/auth.store';
 
 export default {
@@ -172,6 +173,10 @@ export default {
                 const result = await PetshopService.addToCart(this.id, data);
                 if (result) {
                     this.isShowAddToCartSuccess = true;
+                    if (result.updatedExisting == false) {
+                        let CartStore = cartStore();
+                        CartStore.plusAmount();
+                    }
                 }
             } catch (error) {
                 console.log(error);

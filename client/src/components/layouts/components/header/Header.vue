@@ -22,7 +22,9 @@
             </div>
 
             <div class="d-inline">
-                <router-link to="/cart" class="text-white"><i class="fa-solid fa-cart-shopping mx-3"></i></router-link>
+                <router-link to="/cart" class="text-white"
+                    ><toprightamout><i class="fa-solid fa-cart-shopping mx-3"></i></toprightamout
+                ></router-link>
 
                 <span v-if="!isUserLogin">
                     <router-link to="/login" class="text-white text-decoration-none"
@@ -32,10 +34,11 @@
                         ><i class="fa-solid fa-user-plus"></i
                     ></router-link>
                 </span>
-                <span v-else>
+                <span v-else class="user-icon-group">
                     <router-link to="/user/purchase">
-                        <i class="fa-solid fa-user mr-3 ml-2"></i>
+                        <i class="fa-solid fa-user mr-3 ml-2"> </i>
                     </router-link>
+                    <i @click="handleLogout" class="fa-solid fa-arrow-right-from-bracket mr-3"></i>
                 </span>
             </div>
         </div>
@@ -54,10 +57,13 @@
 import { useAuthStore } from '@/stores/auth.store';
 import images from '@/assets/imgs';
 import Search from '@/components/search/Search.vue';
-import CollapseContent from './CollapseContent.vue';
+import CollapseContent from '@/components/layouts/components/header/CollapseContent.vue';
 import Category from './Category.vue';
+import toprightamout from '@/components/toprightamout.vue';
 
 import PetshopService from '@/services/petshop.service';
+import { cartStore } from '@/stores/main';
+import Cartservice from '@/services/cart.service';
 // import ButtonCollapse from '@/components/button/ButtonCollapse.vue';
 export default {
     data() {
@@ -75,6 +81,7 @@ export default {
         Search,
         CollapseContent,
         Category,
+        toprightamout,
         // ButtonCollapse,
     },
     methods: {
@@ -105,6 +112,26 @@ export default {
                 }
             } catch (error) {}
         },
+        async getUser() {
+            const auth = useAuthStore();
+            await auth.loadAuthState();
+            if (auth.user) {
+                return auth.user.user;
+            }
+        },
+        async getTopAmountCart() {
+            try {
+                const user = await this.getUser();
+                let cart = await Cartservice.getCarts(user._id);
+                let CartStore = cartStore();
+                CartStore.setAmount(cart.length);
+            } catch (error) {}
+        },
+        async handleLogout() {
+            const auth = useAuthStore();
+            auth.logout();
+            this.$router.push({ name: 'login' });
+        },
     },
     computed: {
         isUserLogin() {
@@ -118,12 +145,23 @@ export default {
         },
     },
 
-    mounted() {},
+    mounted() {
+        this.getTopAmountCart();
+    },
 };
 </script>
 <style scoped lang="scss">
 .header-search {
     display: flex;
     align-items: center;
+}
+.user-icon-group {
+    position: relative;
+    > i {
+        position: absolute;
+        right: -11px;
+        top: -14px;
+        color: #fff;
+    }
 }
 </style>
