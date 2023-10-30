@@ -7,7 +7,7 @@
             <thead>
                 <tr>
                     <th v-for="(field, index) in fields" :key="field" @click="sortTable(fieldsMap[index])" class="p-1">
-                        {{ field }} <i class="fa-solid fa-sort"></i>
+                        {{ field }}
                     </th>
                 </tr>
             </thead>

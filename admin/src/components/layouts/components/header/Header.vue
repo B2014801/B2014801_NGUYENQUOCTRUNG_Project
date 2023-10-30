@@ -9,38 +9,10 @@
             </router-link>
             <div class="collapse navbar-collapse justify-content-between mr-3">
                 <Category v-if="showCategory" />
-                <!-- <Search></Search> -->
+                <button v-if="showCategory" @click="handleLogout" class="btn btn-light">Đăng xuất</button>
             </div>
 
-            <div class="d-inline text-white">
-                <!-- '<a href="'.(isset($_SESSION['tendangnhapadmin']) ? 'admincp' : 'index.php?quanly=taikhoan').'">
-                    <i class="fa-solid fa-user mr-3 ml-2"></i
-                ></a> -->
-                <!-- <a
-                    class="text-decoration-none text-white"
-                    style="position: absolute; top: 0; right: 0"
-                    data-toggle="modal"
-                    data-target="#modal-logout"
-                    ><i class="fa-solid fa-arrow-right-from-bracket mr-3"></i>Thoát</a
-                > -->
-                <!-- <div id="modal-logout" class="modal fade" tabindex="-1">
-                    <div class="modal-dialog">
-                        <div class="modal-content border">
-                            <h4 class="text-center text-warning">Bạn có chắc muốn thoát không</h4>
-                            <div class="display-inline mx-auto">
-                                <a href="index.php?action=dangxuat" role="button" class="btn btn-danger mr-2">Có</a>
-                                <a role="button" class="btn btn-danger" data-dismiss="modal">Không</a>
-                            </div>
-                        </div>
-                    </div>
-                </div> -->
-                <!-- <router-link to="/login" class="text-white text-decoration-none"
-                    ><i class="fa-solid fa-user"></i> |
-                </router-link>
-                <router-link to="/register" class="text-white text-decoration-none"
-                    ><i class="fa-solid fa-user-plus"></i
-                ></router-link> -->
-            </div>
+            <div class="d-inline text-white"></div>
         </div>
     </nav>
     <CollapseContent v-if="showCategory" :isCollapsed="isCollapsed" />
@@ -50,6 +22,7 @@ import images from '@/assets/imgs';
 import Search from '@/components/search/Search.vue';
 import CollapseContent from './CollapseContent.vue';
 import Category from './Category.vue';
+import { useAuthStore } from '@/stores/auth.store';
 // import ButtonCollapse from '@/components/button/ButtonCollapse.vue';
 export default {
     props: {
@@ -70,6 +43,11 @@ export default {
     methods: {
         toggleCollapse() {
             this.isCollapsed = !this.isCollapsed;
+        },
+        async handleLogout() {
+            let auth = useAuthStore();
+            await auth.logout();
+            this.$router.push({ name: 'login' });
         },
     },
 };

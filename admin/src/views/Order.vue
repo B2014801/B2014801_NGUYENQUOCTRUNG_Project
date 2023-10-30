@@ -1,8 +1,19 @@
 <template>
     <div class="mx-2">
         <h4 class="text-center my-3">Đơn hàng</h4>
+        <h4 class="text-center m-0">({{ filteredInvoice.length }})</h4>
+        <div class="invoice-filter">
+            <select name="" id="" v-model="status">
+                <option :value="5">Tất cả</option>
+                <option :value="0">Chưa duyệt</option>
+                <option :value="1">Đã duyệt</option>
+                <option :value="2">Đang giao</option>
+                <option :value="3">Đã giao</option>
+                <option :value="4">Đã huỷ</option>
+            </select>
+        </div>
         <Table
-            v-if="Invoices.length != 0"
+            v-if="filteredInvoice.length != 0"
             :fields="fields"
             :Data="getDataTable()"
             :isOrder="true"
@@ -33,12 +44,6 @@
                         </div>
                     </div>
                     <div class="order-voucher-container">
-                        <div v-if="item['vouchers'] && item['vouchers'].length != 0">
-                            <div v-for="voucher in item['vouchers']" class="text-end">
-                                <span class="me-3">{{ voucher.name }}</span
-                                ><span>{{ voucher.discount }} %</span>
-                            </div>
-                        </div>
                         <div class="text-end">
                             <span>Phí vận chuyển </span>
                             <span>15.000 ₫</span>
@@ -85,6 +90,7 @@ export default {
             Invoices: [],
             fields: ['STT', 'Địa chỉ', 'Sản phẩm', 'Tổng cộng', 'Ngày đặt', 'Ngày giao', 'Sửa'],
             fieldsMap: ['ID', 'Address', 'Product', 'Total', 'Orderdate', 'Deliverydate', 'confirm'],
+            status: 5,
         };
     },
     methods: {
@@ -98,7 +104,7 @@ export default {
         getDataTable() {
             let datas = [];
 
-            this.Invoices.forEach(async (item, index) => {
+            this.filteredInvoice.forEach(async (item, index) => {
                 let data = {};
                 data.ID = index;
                 data._id = item._id;
@@ -107,8 +113,8 @@ export default {
                 data.Product = item.detail;
                 data.Orderdate = item.orderdate;
                 data.Deliverydate = item.deliverydate;
-                data.vouchers = item.vouchers;
-                data.Total = this.getTemporaryPrice(item.detail, item.vouchers);
+
+                data.Total = this.getTemporaryPrice(item.detail);
                 datas.push(data);
             });
             return datas;
@@ -126,13 +132,8 @@ export default {
                 // if (temporary_price) {
                 // }
             }
-            let discount_percent = 0;
-            if (vouchers && vouchers.length != 0) {
-                // if (!this.showVoucherModal) {
-                discount_percent = vouchers.reduce((total, item) => total + item.discount, 0);
-                // }
-            }
-            const total = products_price - (products_price * discount_percent) / 100 - 15000;
+
+            const total = products_price + 15000;
             return this.formatNumberWithDot(total);
         },
         async handleChangeStatePurchase(id, status) {
@@ -160,6 +161,17 @@ export default {
                 title = 'Đã huỷ';
             }
             return title;
+        },
+    },
+    computed: {
+        filteredInvoice() {
+            if (this.status == 5) {
+                return this.Invoices;
+            } else {
+                return this.Invoices.filter((invoice) => {
+                    return parseInt(invoice.status) == parseInt(this.status);
+                });
+            }
         },
     },
     created() {
@@ -193,5 +205,18 @@ export default {
     span:nth-child(2) {
         min-width: 30px;
     }
+}
+.invoice-filter {
+    text-align: end;
+    margin: 10px 10px 0 0;
+    select {
+        height: 35px;
+        border: 1px solid #ddd;
+        &:focus {
+            box-shadow: 0 0 3px 2px #ddd;
+            outline: none;
+        }
+    }
+    margin-bottom: 8px;
 }
 </style>

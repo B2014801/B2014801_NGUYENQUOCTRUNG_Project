@@ -28,7 +28,7 @@ export default {
         return {
             products: [],
             images: images,
-            fields: ['STT', 'Tên', 'Hình ảnh', 'Giá', 'Giảm', 'Kho', 'Sửa'],
+            fields: ['STT', 'Tên', 'Hình ảnh', 'Giá(VND)', 'Giảm(%)', 'Kho', 'Sửa'],
             fieldsMap: ['STT', 'name', 'img', 'price', 'discount', 'number', 'edit'],
         };
     },

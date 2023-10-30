@@ -34,13 +34,9 @@
                 <tr>
                     <td colspan="2" class="text-end">
                         <div>
-                            <div v-for="item in invoice.vouchers">
-                                <span class="me-2">{{ item.name }}</span>
-                                <span>{{ item.discount }}%</span>
-                            </div>
                             <div>
                                 <span class="me-2">Phí vận chuyển</span>
-                                <span>15.000 đ</span>
+                                <span>15.000 ₫</span>
                             </div>
                         </div>
                         <hr />
@@ -127,12 +123,8 @@ export default {
                     (total, item) => total + item.ordernumber * item.oldprice.replace(/\./g, ''),
                     0,
                 );
-                let voucher_discount = 0;
-                if (invoice.vouchers && invoice.vouchers.length != 0) {
-                    voucher_discount = invoice.vouchers.reduce((total, item) => total + item.discount, 0);
-                }
-                console.log(voucher_discount);
-                const total = products_price - (products_price * voucher_discount) / 100 - 15000;
+
+                const total = products_price + 15000;
                 return this.formatNumberWithDot(total);
             }
         },

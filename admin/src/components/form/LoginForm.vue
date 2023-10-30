@@ -43,7 +43,6 @@
                 </div>
                 <div>
                     <button class="btn btn-info" type="submit">Đăng nhập</button>
-                    <router-link class="btn btn-info ms-4" to="/register" role="button">Tạo tài khoản</router-link>
                 </div>
             </div>
         </Form>
