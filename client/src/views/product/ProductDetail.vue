@@ -167,6 +167,7 @@ export default {
             const data = {
                 UserId: user._id,
                 ProductId: this.id,
+                ProductAmount: this.product.number,
                 Amount: this.AddCartNumber,
             };
             try {

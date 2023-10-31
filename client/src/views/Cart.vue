@@ -15,6 +15,9 @@
         <h6 v-if="isShowUpdateCartSuccess" class="text-left mb-2" style="color: #37e32a">
             <i class="fa-solid fa-check"></i> Giỏ hàng đã được cập nhật
         </h6>
+        <h6 v-if="isShowUpdateCartFailure" class="text-left mb-2" style="color: #eecc37">
+            <i class="fa-solid fa-warning"></i> Số lượng không hợp lệ
+        </h6>
         <h6 v-if="isShowDeleteProductOutOfCartSuccess" class="text-left mb-2" style="color: #37e32a">
             <i class="fa-solid fa-check"></i> {{ recentDeleteProduct.name }} đã xóa khỏi giỏ hàng
         </h6>
@@ -38,7 +41,9 @@
                         <td>
                             <img class="m-2" width="130" height="100" :src="product.ProductData.img" alt="" />
                         </td>
-                        <td style="width: 400px">{{ product.ProductData.name }}</td>
+                        <td style="width: 400px">
+                            {{ product.ProductData.name }}(kho {{ product.ProductData.number }})
+                        </td>
                         <td>
                             <span>{{ product.ProductData.price }} ₫</span>
                         </td>
@@ -150,6 +155,7 @@ export default {
             recentDeleteProduct: {},
             isShowCart: false,
             isShowUpdateCartSuccess: false,
+            isShowUpdateCartFailure: false,
             isShowDeleteProductOutOfCartSuccess: false,
             isShowEmptyCart: false,
             isShowLoading: true,
@@ -191,20 +197,34 @@ export default {
             }
         },
         handlePlusOrderProduct(index) {
-            if (this.cart[index].Amount < 10) {
+            if (this.cart[index].Amount < parseInt(this.cart[index].ProductData.number)) {
                 this.cart[index].Amount++;
                 this.enableBtnUpdateCarts;
             }
         },
 
         async updateCart() {
-            this.isShowLoadingUpdateCart = true;
-            const user = await this.getUser();
-            const result = await CartService.updateCart(user._id, this.cart);
-            if (result) {
-                this.isShowUpdateCartSuccess = true;
-                this.isShowDeleteProductOutOfCartSuccess = false;
-                this.isShowLoadingUpdateCart = false;
+            let flag = true;
+            this.cart.map((item, index) => {
+                if (parseInt(item.ProductData.number) < parseInt(item.Amount) || parseInt(item.Amount) <= 0) {
+                    flag = false;
+                    this.isShowUpdateCartFailure = true;
+                    this.isShowUpdateCartSuccess = false;
+                    this.isShowDeleteProductOutOfCartSuccess = false;
+                }
+            });
+            if (flag == true) {
+                this.isShowLoadingUpdateCart = true;
+                const user = await this.getUser();
+                const result = await CartService.updateCart(user._id, this.cart);
+                console.log(result);
+                if (result == true) {
+                    console.log(result);
+                    this.isShowUpdateCartSuccess = true;
+                    this.isShowDeleteProductOutOfCartSuccess = false;
+                    this.isShowLoadingUpdateCart = false;
+                    this.isShowUpdateCartFailure = false;
+                }
             }
         },
         formatNumberWithDot(number) {
@@ -222,6 +242,8 @@ export default {
             if (result) {
                 this.isShowDeleteProductOutOfCartSuccess = true;
                 this.isShowUpdateCartSuccess = false;
+                this.isShowUpdateCartFailure = false;
+                this.isShowUpdateCartFailure = false;
                 this.getCart();
                 let CartStore = cartStore();
                 CartStore.minusAmount();
