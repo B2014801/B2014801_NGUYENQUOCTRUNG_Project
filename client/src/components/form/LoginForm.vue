@@ -25,21 +25,24 @@
                         <Field
                             id="password"
                             name="password"
-                            type="password"
-                            value=""
+                            :type="isShowPassword ? 'text' : 'password'"
                             class="form-control border-0"
                             placeholder="Nhập mật khẩu của bạn"
                             v-model="user.password"
                         />
-                        <i
-                            onclick="ShowPassword(document.querySelector('#password-input-matkhau'))"
-                            class="fa-sharp fa-solid fa-eye border-0 bg-white px-2 my-auto"
-                        ></i>
+                        <i @click="showPassword" class="fa-sharp fa-solid fa-eye border-0 bg-white px-2 my-auto"></i>
                     </div>
                     <strong class="text-danger"><ErrorMessage name="password"></ErrorMessage></strong>
                 </div>
                 <div class="form-group form-check my-2">
-                    <Field type="checkbox" id="remember" name="nho-mat-khau" class="form-check-input" />
+                    <Field
+                        type="checkbox"
+                        id="remember"
+                        name="nho-mat-khau"
+                        class="form-check-input"
+                        @click="isSavePassword = !isSavePassword"
+                        v-model="isSavePassword"
+                    />
                     <label for="remember" class="form-check-label">Ghi nhớ tôi</label>
                 </div>
                 <div class="btn-login-register-container">
@@ -54,6 +57,7 @@
 <script>
 import * as yup from 'yup';
 import { Field, Form, ErrorMessage } from 'vee-validate';
+import Cookies from 'js-cookie';
 
 export default {
     props: {
@@ -75,17 +79,42 @@ export default {
                 email: '',
                 password: '',
             },
+            isShowPassword: false,
+            isSavePassword: false,
         };
     },
     emits: ['submit:login'],
     methods: {
         submitLogin() {
+            if (this.isSavePassword == null) {
+                this.setCookie();
+            }
             this.$emit('submit:login', this.user);
         },
         handleSubmitOauth(data) {
             console.log(data);
             this.$emit('submit:login', data);
         },
+        showPassword() {
+            this.isShowPassword = !this.isShowPassword;
+        },
+        setCookie() {
+            if (Cookies.get('user')) {
+                Cookies.remove('user');
+            }
+            // Set a cookie to store the password
+            Cookies.set('user', JSON.stringify(this.user), { expires: 7 }); // 'passwordCookie' is the cookie name
+        },
+        getCookie() {
+            if (Cookies.get('user')) {
+                let cookie = JSON.parse(Cookies.get('user'));
+                this.user.email = cookie.email;
+                this.user.password = cookie.password;
+            }
+        },
+    },
+    mounted() {
+        this.getCookie();
     },
 };
 </script>

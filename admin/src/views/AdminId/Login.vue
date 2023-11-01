@@ -1,10 +1,6 @@
 <template>
-    <div v-if="isShowErrorMessage" class="mt-2 text-center">
-        <strong class="text-danger">{{ isShowErrorMessage }}</strong>
-    </div>
-
     <div>
-        <LoginForm @submit:login="handleLogin" />
+        <LoginForm @submit:login="handleLogin" :errorLoginEmailOrPassword="errorLoginEmailOrPassword" />
     </div>
 </template>
 
@@ -21,6 +17,7 @@ export default {
         return {
             isShowErrorMessage: '',
             loading: false,
+            errorLoginEmailOrPassword: false,
         };
     },
     methods: {
@@ -35,10 +32,7 @@ export default {
                     this.$router.push({ name: 'product' });
                 }
             } catch (error) {
-                console.log(error);
-
-                this.loading = false;
-                this.message = 'Đã có lỗi xảy ra.';
+                this.errorLoginEmailOrPassword = true;
             }
         },
     },
