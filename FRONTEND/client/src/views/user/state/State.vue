@@ -100,7 +100,7 @@ export default {
                     this.isShowEmptyPurchase = false;
                 }
             } catch (error) {
-                console.log(error);
+                this.$router.push({ name: 'login' });
             }
         },
         getPrice(product) {

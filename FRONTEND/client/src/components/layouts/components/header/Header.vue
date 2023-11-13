@@ -38,7 +38,11 @@
                     <router-link to="/user/purchase">
                         <i class="fa-solid fa-user mr-3 ml-2"> </i>
                     </router-link>
-                    <i @click="handleLogout" class="fa-solid fa-arrow-right-from-bracket mr-3"></i>
+                    <i
+                        v-if="isNotExpiredToken"
+                        @click="handleLogout"
+                        class="fa-solid fa-arrow-right-from-bracket mr-3"
+                    ></i>
                 </span>
             </div>
         </div>
@@ -142,6 +146,10 @@ export default {
             } catch (error) {
                 console.log(error);
             }
+        },
+        isNotExpiredToken() {
+            let auth = useAuthStore();
+            return !auth.getExpired;
         },
     },
 

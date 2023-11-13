@@ -38,6 +38,7 @@ export const createApiClient = (baseURL, withAuthToken = false) => {
             const { useAuthStore } = module;
             try {
                 const auth = useAuthStore();
+                auth.setNotExpired();
                 await auth.loadAuthState();
 
                 const user = auth.user;

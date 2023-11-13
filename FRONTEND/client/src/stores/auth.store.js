@@ -51,5 +51,8 @@ export const useAuthStore = defineStore('auth', {
         setExpired() {
             this.isExpire = true;
         },
+        setNotExpired() {
+            this.isExpire = false;
+        },
     },
 });

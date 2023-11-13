@@ -123,7 +123,11 @@ export default {
                 .required('Bạn chưa nhập email')
                 .email('email không hợp lệ')
                 .max(40, 'email nhỏ hơn 40 ký tự '),
-            password: yup.string().required('Bạn chưa nhập mật khẩu').max(100, 'Địa chỉ tối đa 100 ký tự.'),
+            password: yup
+                .string()
+                .required('Bạn chưa nhập mật khẩu')
+                .max(100, 'Mật khẩu tối đa 100 ký tự.')
+                .min(8, 'Tối thiểu 8 ký tự'),
             password_repeat: yup
                 .string()
                 .required('Mật khẩu không khớp')
