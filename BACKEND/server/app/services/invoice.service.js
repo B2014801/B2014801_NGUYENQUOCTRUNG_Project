@@ -129,7 +129,7 @@ class InvoiceService {
             if (data.status == 0) {
                 StatusChangeTo = 1;
                 let invoices = await this.Invoice.findOne({ _id: new ObjectId(data.id) });
-                console.log(invoices);
+                // console.log(invoices);
                 for (const invoice of invoices.Detail) {
                     let product = await this.Product.findOne({ _id: new ObjectId(invoice._id) });
                     console.log(invoice);
