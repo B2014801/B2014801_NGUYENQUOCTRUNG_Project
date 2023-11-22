@@ -1,6 +1,7 @@
 <template>
     <div class="mt-3 mx-2 mb-4">
-        <h4 class="text-center my-3">Sản phẩm</h4>
+        <h4 class="text-center mt-3">Sản phẩm</h4>
+        <h4 class="text-center mb-2">({{ products.length }})</h4>
         <div class="text-center">
             <router-link to="/product/add"><button class="btn btn-secondary">Thêm</button></router-link>
         </div>
